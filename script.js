@@ -112,14 +112,24 @@ timerID = setInterval(moveBall, 30);
 // check for collisions
 function checkForCollisions() {
   // check for walls
-  if (ballCurrentPosition[x] >= boardWidth - ballDiameter) {
-    changeDirection();
+  if (
+    ballCurrentPosition[0] >= boardWidth - ballDiameter ||
+    ballCurrentPosition[0] <= 0
+  ) {
+    changeDirection(0);
+  } else if (ballCurrentPosition[1] >= boardHeight - ballDiameter) {
+    changeDirection(1);
+  }
+
+  if (ballCurrentPosition[1] <= 0) {
+    clearInterval(timerID);
   }
 }
 
-function changeDirection() {
-  if (xDirection === 2 && yDirection === 2) {
-    yDirection = -2;
-    return;
+function changeDirection(dir) {
+  if (dir === 0) {
+    xDirection = -xDirection;
+  } else {
+    yDirection = -yDirection;
   }
 }
