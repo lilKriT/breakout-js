@@ -18,6 +18,7 @@ let ballCurrentPosition = ballStart;
 let timerID;
 let xDirection = 2;
 let yDirection = 2;
+let score = 0;
 
 // create block class
 class Block {
@@ -130,6 +131,15 @@ function checkForCollisions() {
       const allBlocks = Array.from(document.querySelectorAll(".block"));
       allBlocks[i].classList.remove("block");
       blocks.splice(i, 1);
+      score++;
+      scoreDisplay.innerHTML = score;
+
+      // check for win
+      if (blocks.length === 0) {
+        scoreDisplay.innerHTML = "You win";
+        clearInterval(timerID);
+        document.removeEventListener("keydown", moveUser);
+      }
     }
   }
 
@@ -143,8 +153,17 @@ function checkForCollisions() {
     changeDirection(1);
   }
 
-  // check for game over
+  // check for player
+  if (
+    ballCurrentPosition[0] > currentPosition[0] &&
+    ballCurrentPosition[0] < currentPosition[0] + blockWidth &&
+    ballCurrentPosition[1] > currentPosition[1] &&
+    ballCurrentPosition[1] < currentPosition[1] + blockHeight
+  ) {
+    changeDirection(1);
+  }
   if (ballCurrentPosition[1] <= 0) {
+    // check for game over
     clearInterval(timerID);
     scoreDisplay.innerHTML = "You lose";
     document.removeEventListener("keydown", moveUser);
